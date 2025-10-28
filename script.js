@@ -11,3 +11,6 @@ async function sendMessage() {
   const data = await response.json();
   addMessage(data.reply, "bot");
 }
+// ✅ Define the input box and send button
+const inputElem = document.querySelector("#user-input");
+const sendBtn = document.querySelector("#send-btn");
