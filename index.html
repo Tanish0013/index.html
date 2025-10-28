@@ -387,15 +387,16 @@ clearBtn.addEventListener("click", ()=>{
   saveChat(); renderMessages();
 });
 
-/* send */
+// ✅ Make both Enter key and Send button work perfectly
 sendBtn.addEventListener("click", sendUser);
-// Send message on Enter (and allow Shift+Enter for new line)
+
 inputElem.addEventListener("keydown", function (event) {
   if (event.key === "Enter" && !event.shiftKey) {
-    event.preventDefault(); // Prevent new line
-    sendUser(); // Trigger send
+    event.preventDefault(); // Stop line break
+    sendUser(); // Call the same function used by Send button
   }
 });
+
 
 /* small helper to escape HTML */
 function escapeHtml(s){
@@ -421,4 +422,8 @@ window.__techai = {clear: ()=>{clearBtn.click()}, convo: ()=>conversation};
 </script>
 </body>
 </html>
+
+// ✅ Define the input box and send button
+const inputElem = document.querySelector("#user-input");
+const sendBtn = document.querySelector("#send-btn");
 
