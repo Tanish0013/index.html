@@ -1,213 +1,417 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tech AI - Your Smart Assistant</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Tech AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#0b1020;
+    --bg2:#0f2a5a;
+    --accent:#9b6cff;
+    --accent2:#6be0ff;
+    --card:#0f2340aa;
+    --glass: rgba(255,255,255,0.03);
+  }
+  html,body{height:100%;margin:0;font-family:"Poppins",system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  body{
+    background: radial-gradient( circle at 10% 20%, #081026 0%, transparent 30%),
+                linear-gradient(120deg,#07122a 0%, #092b5a 40%, #0f4fa6 100%);
+    background-size: 300% 300%;
+    animation: bgShift 14s ease-in-out infinite;
+    color:#e9f0ff;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:28px;
+    box-sizing:border-box;
+  }
+  @keyframes bgShift{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  /* container */
+  .page {
+    width:100%;
+    max-width:1100px;
+    margin: 20px 0;
+  }
 
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(120deg, #001f3f, #0074D9, #001f3f);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      color: white;
-    }
+  /* header */
+  .header {
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom: 18px;
+  }
+  .logo {
+    width:44px;height:44px;border-radius:10px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 22px rgba(107,224,255,0.12), inset 0 -6px 10px rgba(0,0,0,0.25);
+    font-weight:700;color:#021028;font-size:20px;
+  }
+  .title {
+    font-size:26px;font-weight:700;letter-spacing:0.2px;
+    display:flex;flex-direction:column;
+  }
+  .subtitle {font-size:13px;color:rgba(233,240,255,0.65);margin-top:4px;font-weight:500;}
 
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+  /* main hero row */
+  .hero {
+    display:flex;
+    gap:28px;
+    align-items:flex-start;
+  }
 
-    h1 {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 10px;
-      color: #00bfff;
-      text-shadow: 0 0 10px #00bfff;
-      animation: fadeIn 2s ease;
-    }
+  .left {
+    flex:1.2;
+    min-width:300px;
+    padding:22px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008));
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 10px 30px rgba(7,18,35,0.45);
+    position:relative;
+    overflow:hidden;
+  }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+  .cards {display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px;}
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:14px;padding:18px;
+    border:1px solid rgba(255,255,255,0.03);
+    cursor:pointer; transition:transform .18s, box-shadow .18s;
+    font-weight:600; color:#e6f2ff;
+  }
+  .card:hover{ transform:translateY(-6px); box-shadow:0 18px 40px rgba(9,26,64,0.45); }
 
-    .chat-container {
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 20px;
-      width: 90%;
-      max-width: 480px;
-      height: 60vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
-      backdrop-filter: blur(10px);
-    }
+  /* chat card (center) */
+  .chat-card {
+    width:520px; max-width:55vw; min-width:320px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius:14px;padding:18px;
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 20px 60px rgba(8,18,38,0.6);
+    display:flex;flex-direction:column;gap:12px;
+  }
 
-    .messages {
-      flex: 1;
-      overflow-y: auto;
-      padding-right: 10px;
-    }
+  .suggestions {display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .chip {
+    padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.03);
+    cursor:pointer;font-weight:600;color:#dbefff;font-size:13px;
+  }
+  .chip:hover{transform:translateY(-4px);}
 
-    .message {
-      margin: 10px 0;
-      padding: 10px 15px;
-      border-radius: 15px;
-      max-width: 80%;
-      animation: fadeInMsg 0.4s ease;
-    }
+  /* messages */
+  .messages {
+    height:360px; overflow:auto; padding:8px; display:flex;flex-direction:column;gap:10px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+    border-radius:10px;padding:14px;
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .msg {max-width:85%;padding:12px 14px;border-radius:12px;line-height:1.35;font-weight:500;}
+  .botmsg {background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); color:#eaf6ff; border-left:4px solid var(--accent); align-self:flex-start;}
+  .usermsg{background:linear-gradient(90deg,#0aa3ff,#0056d6); color:white; align-self:flex-end;}
 
-    @keyframes fadeInMsg {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+  /* input area */
+  .input-row {display:flex;gap:10px;align-items:center;margin-top:6px}
+  .input {
+    flex:1;padding:12px 14px;border-radius:999px;border:none;font-size:15px;background:rgba(255,255,255,0.03);color:#f5fbff;outline:none;
+  }
+  .btn {padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#021028;}
+  .btn-soft {background:rgba(255,255,255,0.03);color:#eaf6ff;}
+  .btn-clear {background:#ff6b6b;color:white;border-radius:10px;padding:10px 12px;}
 
-    .user {
-      background: #0074D9;
-      align-self: flex-end;
-    }
+  /* online dot top-right */
+  .online {
+    position:absolute; right:16px; top:16px; display:flex; gap:8px; align-items:center; font-weight:600; color: #cfeeff;
+  }
+  .dot {width:10px;height:10px;border-radius:999px;background:#30c85f;box-shadow:0 4px 10px rgba(48,200,95,0.2);}
 
-    .bot {
-      background: #004080;
-      align-self: flex-start;
-    }
+  /* footer small */
+  .footer {margin-top:14px;color:rgba(233,240,255,0.6);font-size:13px}
 
-    .input-area {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    input {
-      flex: 1;
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-      font-size: 1rem;
-    }
-
-    button {
-      background: #00bfff;
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #0099cc;
-    }
-
-    .clear-btn {
-      background: #ff4444;
-    }
-
-    .clear-btn:hover {
-      background: #cc0000;
-    }
-
-    .typing {
-      font-style: italic;
-      opacity: 0.7;
-    }
-  </style>
+  /* small screens */
+  @media (max-width:900px){
+    .hero{flex-direction:column;align-items:center}
+    .left {width:100%}
+    .chat-card{width:100%}
+  }
+</style>
 </head>
-
 <body>
-  <h1>🤖 Welcome to <span style="color:#00bfff;">Tech AI</span></h1>
-
-  <div class="chat-container">
-    <div class="messages" id="chatBox">
-      <div class="message bot">👋 Hello! I'm <b>Tech AI</b>. You can type or speak.<br>What do you want me to do today?</div>
+  <div class="page">
+    <div class="header">
+      <div class="logo">TA</div>
+      <div class="title">Tech AI
+        <div class="subtitle">Your intelligent assistant for technology, programming, and knowledge exploration.</div>
+      </div>
     </div>
 
-    <div class="input-area">
-      <input type="text" id="userInput" placeholder="Type or speak..." />
-      <button onclick="sendMessage()">Send</button>
-      <button onclick="startVoice()">🎤</button>
-      <button class="clear-btn" onclick="clearChat()">🗑️</button>
+    <div class="hero">
+      <div class="left">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div style="font-weight:700;font-size:20px">Welcome to Tech AI</div>
+            <div style="color:rgba(233,240,255,0.6);margin-top:8px">Ask anything — explain technology, write code, solve problems.</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;color:rgba(233,240,255,0.6);">Suggestions:</div>
+            <div class="suggestions" id="leftSuggestions" style="margin-top:6px">
+              <div class="chip" data-s="Explain quantum computing">Explain quantum computing</div>
+              <div class="chip" data-s="Write a poem about technology">Write a poem about technology</div>
+              <div class="chip" data-s="How does AI work?">How does AI work?</div>
+              <div class="chip" data-s="Tips for learning programming">Tips for learning programming</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards" style="margin-top:18px">
+          <div class="card" data-s="Explain technology">Explain Technology<br><small style="color:rgba(233,240,255,0.6);font-weight:500">Learn about quantum computing, AI, and more</small></div>
+          <div class="card" data-s="Write code">Write Code<br><small style="color:rgba(233,240,255,0.6);font-weight:500">Get help with programming and debugging</small></div>
+          <div class="card" data-s="Creative content">Creative Content<br><small style="color:rgba(233,240,255,0.6);font-weight:500">Generate poems, stories, and ideas</small></div>
+          <div class="card" data-s="Problem solving">Problem Solving<br><small style="color:rgba(233,240,255,0.6);font-weight:500">Analyze and solve complex problems</small></div>
+        </div>
+      </div>
+
+      <div class="chat-card">
+        <div class="online"><div class="dot"></div> Online</div>
+        <div class="messages" id="messages">
+          <!-- messages inserted here -->
+        </div>
+
+        <div style="display:flex;flex-direction:column">
+          <div class="suggestions" id="suggestionsTop" style="margin-bottom:8px">
+            <!-- suggestion chips -->
+          </div>
+
+          <div class="input-row">
+            <input id="userInput" class="input" placeholder="Ask Tech AI anything..." autocomplete="off" />
+            <button id="sendBtn" class="btn">Send</button>
+            <button id="micBtn" class="btn-soft" title="Speak">🎤</button>
+            <button id="clearBtn" class="btn-clear" title="Clear chat">🗑</button>
+          </div>
+        </div>
+
+        <div class="footer">Tip: Use suggestions to get quick answers. This demo uses OpenRouter (replace with your API key or proxy).</div>
+      </div>
     </div>
   </div>
 
-  <script>
-    const chatBox = document.getElementById('chatBox');
-    const input = document.getElementById('userInput');
+<script>
+/* ======= CONFIG =======
+  You must set either:
+  1) PIPE_PROXY_URL to your Pipedream or proxy endpoint (recommended - hides key)
+  OR
+  2) OPENROUTER_API_KEY with your OpenRouter key (not secure to put into client-side HTML for public apps)
+*/
+const https://eo1mvitax7efjjb.m.pipedream.net/ = ""; // <-- Optional: your Pipedream proxy URL (https://xxxx.m.pipedream.net) recommended
+const OPENROUTER_API_KEY = ""; // <-- Optional: direct OpenRouter key (starts with sk-or-... ) (unsafe to leave in public HTML)
 
-    function addMessage(content, sender) {
-      const msg = document.createElement('div');
-      msg.classList.add('message', sender);
-      msg.innerHTML = content;
-      chatBox.appendChild(msg);
-      chatBox.scrollTop = chatBox.scrollHeight;
+/* Choose model (OpenRouter models names vary) */
+const OPENROUTER_MODEL = "gpt-4o-mini"; // change if you prefer another model
+
+/* system prompt for personality */
+const SYSTEM_PROMPT = "You are Tech AI, a helpful, polite and concise technical assistant. Answer clearly and keep replies friendly. When possible provide short examples and steps.";
+
+/* ======= UI + chat logic ======= */
+const messagesElem = document.getElementById("messages");
+const inputElem = document.getElementById("userInput");
+const sendBtn = document.getElementById("sendBtn");
+const micBtn = document.getElementById("micBtn");
+const clearBtn = document.getElementById("clearBtn");
+const suggestionContainers = [document.getElementById("leftSuggestions"), document.getElementById("suggestionsTop")];
+
+let conversation = []; // conversation history stored in localStorage
+
+/* Load saved chat */
+function loadChat(){
+  try {
+    const saved = localStorage.getItem("techai_chat_v1");
+    if(saved) conversation = JSON.parse(saved);
+    else {
+      conversation = [{role:"system",content:SYSTEM_PROMPT}, {role:"assistant",content:"👋 Hello! I'm Tech AI. Ask me anything — or try the suggestion chips."}];
     }
+  } catch(e) { conversation = [{role:"system",content:SYSTEM_PROMPT}]; }
+  renderMessages();
+}
+function saveChat(){ localStorage.setItem("techai_chat_v1", JSON.stringify(conversation)); }
 
-    async function sendMessage() {
-      const userText = input.value.trim();
-      if (!userText) return;
+/* Render UI messages */
+function renderMessages(){
+  messagesElem.innerHTML = "";
+  for(let i=0;i<conversation.length;i++){
+    const m = conversation[i];
+    if(m.role === "system") continue;
+    const div = document.createElement("div");
+    div.className = "msg " + (m.role === "user" ? "usermsg" : "botmsg");
+    div.innerHTML = m.content;
+    messagesElem.appendChild(div);
+  }
+  messagesElem.scrollTop = messagesElem.scrollHeight;
+}
 
-      addMessage(userText, 'user');
-      input.value = '';
+/* Utility to push message */
+function pushMessage(role,content){
+  conversation.push({role,content});
+  saveChat();
+  renderMessages();
+}
 
-      addMessage('<span class="typing">Tech AI is typing...</span>', 'bot');
+/* Show temporary typing indicator */
+function showTyping(){
+  const t = document.createElement("div"); t.className="msg botmsg"; t.id="typingDot"; t.innerHTML="<i>Tech AI is typing…</i>";
+  messagesElem.appendChild(t); messagesElem.scrollTop = messagesElem.scrollHeight;
+}
+function hideTyping(){ const el = document.getElementById("typingDot"); if(el) el.remove(); }
 
-      setTimeout(() => {
-        chatBox.lastChild.remove(); // remove typing
-        const response = generateReply(userText);
-        addMessage(response, 'bot');
-        speak(response);
-      }, 1000);
-    }
+/* send action */
+async function sendUser(){
+  const text = inputElem.value.trim();
+  if(!text) return;
+  inputElem.value = "";
+  pushMessage("user",escapeHtml(text));
+  pushMessage("assistant",""); // placeholder to keep render consistent
+  renderMessages();
+  showTyping();
 
-    function generateReply(text) {
-      text = text.toLowerCase();
-      if (text.includes("hello") || text.includes("hi")) return "Hey there 👋! How can I help you today?";
-      if (text.includes("who are you")) return "I'm Tech AI, your personal smart assistant 🤖.";
-      if (text.includes("time")) return "The current time is " + new Date().toLocaleTimeString();
-      if (text.includes("date")) return "Today's date is " + new Date().toLocaleDateString();
-      if (text.includes("your creator")) return "I was created by Tanish 🧠.";
-      return "I'm still learning! Could you rephrase that?";
-    }
+  // Build request messages for model (pass entire convo for context)
+  const msgs = conversation.filter(m=>m.role!=="system").map(m => ({role:m.role, content:m.content}));
+  // add system as first (some routers expect messages array to include system)
+  const messagesForAPI = [{role:"system",content:SYSTEM_PROMPT}, ...msgs, {role:"user", content:text}];
 
-    // Voice input
-    function startVoice() {
-      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-      recognition.lang = "en-US";
-      recognition.start();
-      recognition.onresult = (event) => {
-        const text = event.results[0][0].transcript;
-        input.value = text;
-        sendMessage();
-      };
-    }
+  try {
+    const reply = await callOpenRouter(messagesForAPI);
+    hideTyping();
+    // Replace last assistant placeholder with real reply
+    conversation = conversation.filter(m=> !(m.role==="assistant" && m.content===""));
+    pushMessage("assistant", escapeHtml(reply));
+  } catch(err){
+    hideTyping();
+    // replace placeholder
+    conversation = conversation.filter(m=> !(m.role==="assistant" && m.content===""));
+    pushMessage("assistant", "⚠️ Could not reach AI service. " + (err.message || ""));
+    console.error(err);
+  }
+}
 
-    // Voice output
-    function speak(text) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "en-US";
-      speechSynthesis.speak(utterance);
-    }
+/* call OpenRouter or proxy */
+async function callOpenRouter(messages){
+  /* If you set PIPE_PROXY_URL, call your proxy (recommended) which forwards securely to OpenRouter */
+  if(PIPE_PROXY_URL && PIPE_PROXY_URL.trim() !== ""){
+    const r = await fetch(PIPE_PROXY_URL, {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({messages, model:OPENROUTER_MODEL})
+    });
+    if(!r.ok) throw new Error("Proxy error: " + r.statusText);
+    const json = await r.json();
+    if(json && json.reply) return json.reply;
+    if(json && json.choices && json.choices[0] && json.choices[0].message) return json.choices[0].message.content;
+    return JSON.stringify(json);
+  }
 
-    // Clear chat
-    function clearChat() {
-      chatBox.innerHTML = '<div class="message bot">🧹 Chat cleared. How can I assist you again?</div>';
-    }
-  </script>
+  /* Direct call to OpenRouter (unsafe in public HTML) */
+  if(!OPENROUTER_API_KEY || OPENROUTER_API_KEY.trim()==="") throw new Error("No API key configured. Set PIPE_PROXY_URL or OPENROUTER_API_KEY.");
+
+  const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":"Bearer " + OPENROUTER_API_KEY
+    },
+    body: JSON.stringify({
+      model: OPENROUTER_MODEL,
+      messages: messages,
+      temperature: 0.2,
+      max_tokens: 800
+    })
+  });
+  if(!resp.ok){
+    const text = await resp.text();
+    throw new Error("OpenRouter error: " + resp.status + " - " + text);
+  }
+  const data = await resp.json();
+  // typical shape: data.choices[0].message.content
+  const content = (data?.choices?.[0]?.message?.content) || data?.choices?.[0]?.text || JSON.stringify(data);
+  return content;
+}
+
+/* suggestions chips */
+function initChips(){
+  const chips = document.querySelectorAll(".card, .chip");
+  chips.forEach(c=>{
+    c.addEventListener("click", ()=>{
+      const s = c.getAttribute("data-s") || c.innerText;
+      inputElem.value = s;
+      inputElem.focus();
+      // auto send
+      setTimeout(()=> sendUser(), 220);
+    });
+  });
+  // top suggestion container duplicates some
+  const top = document.getElementById("suggestionsTop");
+  const sample = ["Explain quantum computing","Write a poem about technology","How does AI work?","Tips for learning programming"];
+  sample.forEach(t=>{
+    const el = document.createElement("div"); el.className="chip"; el.innerText=t;
+    el.addEventListener("click", ()=>{ inputElem.value=t; setTimeout(()=>sendUser(),200);});
+    top.appendChild(el);
+  });
+}
+
+/* voice input */
+micBtn.addEventListener("click", ()=> {
+  if(!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)){
+    alert("Speech recognition not supported in this browser.");
+    return;
+  }
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const rec = new Recognition();
+  rec.lang = "en-IN";
+  rec.interimResults = false;
+  rec.onresult = (ev) => {
+    inputElem.value = ev.results[0][0].transcript;
+    sendUser();
+  };
+  rec.onerror = (e) => console.error("Speech error", e);
+  rec.start();
+});
+
+/* clear */
+clearBtn.addEventListener("click", ()=>{
+  conversation = [{role:"system",content:SYSTEM_PROMPT}, {role:"assistant",content:"👋 Chat cleared. Ask anything."}];
+  saveChat(); renderMessages();
+});
+
+/* send */
+sendBtn.addEventListener("click", sendUser);
+inputElem.addEventListener("keydown", (e)=>{ if(e.key === "Enter") sendUser(); });
+
+/* small helper to escape HTML */
+function escapeHtml(s){
+  if(!s) return "";
+  return s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+}
+
+/* initially load */
+loadChat();
+initChips();
+
+/* show existing conversation */
+renderMessages();
+
+/* Helpful: expose clearChat to console for debugging */
+window.__techai = {clear: ()=>{clearBtn.click()}, convo: ()=>conversation};
+
+/* ===== Helpful Notes for you: =====
+- To avoid exposing your OpenRouter API key in client HTML, set up a Pipedream workflow that forwards POST requests to https://openrouter.ai/api/v1/chat/completions
+  and returns only the assistant text in a { "reply": "<text>" } JSON property.
+- If you want, I can give the exact Pipedream workflow code to paste; it takes 5-8 clicks and a tiny Nodejs step.
+================================== */
+</script>
 </body>
 </html>
-
